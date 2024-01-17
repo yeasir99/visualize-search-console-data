@@ -1,6 +1,6 @@
 'use client';
 
-const GetDataButton = () => {
+const GetDataButton = ({ setData }) => {
   const handleAuthClick = async () => {
     try {
       const response = await fetch('/api/data', {
@@ -9,7 +9,22 @@ const GetDataButton = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
+        const { rows } = result;
+
+        let data = {
+          labels: [],
+          clicks: [],
+          impressions: [],
+        };
+
+        for (let i = 0; i < rows.length; i++) {
+          const { keys, clicks, impressions } = rows[i];
+          data.labels.push(keys[0]);
+          data.clicks.push(clicks);
+          data.impressions.push(impressions);
+        }
+
+        setData(data);
       } else {
         setMessage('Authentication failed');
       }
