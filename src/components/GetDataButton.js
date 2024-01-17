@@ -1,19 +1,15 @@
 'use client';
-import { useState } from 'react';
 
-const GoogleAuthButton = () => {
+const GetDataButton = () => {
   const handleAuthClick = async () => {
     try {
-      const response = await fetch('/api', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch('/api/data', {
+        method: 'GET',
       });
 
       if (response.ok) {
         const result = await response.json();
-        window.location.assign(result.url);
+        console.log(result);
       } else {
         setMessage('Authentication failed');
       }
@@ -26,10 +22,10 @@ const GoogleAuthButton = () => {
     <div>
       {/* <p>{message}</p> */}
       <button type="button" onClick={handleAuthClick}>
-        Authenticate with Google
+        get Data
       </button>
     </div>
   );
 };
 
-export default GoogleAuthButton;
+export default GetDataButton;

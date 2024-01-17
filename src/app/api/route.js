@@ -17,6 +17,8 @@ async function getCredentials() {
   }
 }
 
+getCredentials();
+
 export async function GET(req) {
   const url = new URL(req.url);
 
@@ -36,8 +38,6 @@ export async function GET(req) {
     return NextResponse.json({ error: 'Error exchanging code for tokens' });
   }
 }
-
-getCredentials();
 
 export async function POST() {
   const scopes = [
