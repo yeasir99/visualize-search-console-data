@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import fs from 'fs/promises';
+import fs from 'fs';
 import { NextResponse } from 'next/server';
 
 const oauth2Client = new google.auth.OAuth2(
@@ -8,9 +8,9 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.REDIRECT_URI
 );
 
-async function getCredentials() {
+function getCredentials() {
   try {
-    const creds = await fs.readFile('creds.json');
+    const creds = fs.readFileSync('creds.json');
     oauth2Client.setCredentials(JSON.parse(creds));
   } catch (error) {
     console.log('No creds found');
@@ -27,7 +27,7 @@ export async function GET(req) {
   try {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
-    await fs.writeFile('creds.json', JSON.stringify(tokens));
+    fs.writeFileSync('creds.json', JSON.stringify(tokens));
 
     const mainUrl = url.origin;
 
